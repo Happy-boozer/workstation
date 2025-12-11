@@ -41,6 +41,7 @@ class MainActivity2 : ComponentActivity() {
         MapKitFactory.initialize(this)
 
 
+
         enableEdgeToEdge()
         setContent {
             Box(modifier = Modifier.fillMaxSize())
@@ -57,17 +58,17 @@ class MainActivity2 : ComponentActivity() {
 
         }
     }
-//    override fun onStart() {
-//        super.onStart()
-//        MapKitFactory.getInstance().onStart()
-//        mapView.onStart()
-//    }
-//
-//    override fun onStop() {
-//        mapView.onStop()
-//        MapKitFactory.getInstance().onStop()
-//        super.onStop()
-//    }
+    override fun onStart() {
+        super.onStart()
+        MapKitFactory.getInstance().onStart()
+
+    }
+
+    override fun onStop() {
+        super.onStop()
+        MapKitFactory.getInstance().onStop()
+
+    }
 }
 
 @Composable
@@ -91,10 +92,10 @@ fun YandexMapScreen() {
     AndroidView(
         factory = { context ->
             MapView(context).apply {
-                id = R.id.mapview
+
                 map.move(
                     CameraPosition(
-                        Point(55.751574, 37.573856), // Москва
+                        Point(55.574823, 37.597943), // Москва
                         11.0f,  // zoom
                         0.0f,   // azimuth
                         0.0f    // tilt
