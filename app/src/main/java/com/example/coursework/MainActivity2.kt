@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,12 +28,14 @@ import com.yandex.mapkit.map.CameraPosition
 import com.yandex.mapkit.mapview.MapView
 
 fun read ():String{
-    val file = File("app/src/main/java/com/example/coursework/key.txt")
-    val content: String = file.readText(Charsets.UTF_8)
+    val content: String = key().key()
     return content
 }
 
+
 class MainActivity2 : ComponentActivity() {
+
+
     //private lateinit var mapView: MapView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -96,7 +99,7 @@ fun YandexMapScreen() {
                 map.move(
                     CameraPosition(
                         Point(55.574823, 37.597943), // Москва
-                        11.0f,  // zoom
+                        90.0f,  // zoom
                         0.0f,   // azimuth
                         0.0f    // tilt
                     )
