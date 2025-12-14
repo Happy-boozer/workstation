@@ -7,7 +7,9 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -26,6 +28,7 @@ import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.map.CameraPosition
 import com.yandex.mapkit.mapview.MapView
+import com.yandex.runtime.image.ImageProvider
 
 fun read ():String{
     val content: String = key().key()
@@ -43,21 +46,21 @@ class MainActivity2 : ComponentActivity() {
         MapKitFactory.setApiKey(API_Key)
         MapKitFactory.initialize(this)
 
+        val imageProvider = ImageProvider.fromResource(this, R.drawable.img)
 
 
         enableEdgeToEdge()
         setContent {
             Box(modifier = Modifier.fillMaxSize())
             {
-            Box(modifier = Modifier.size(height = 250.dp, width = 500.dp)
+            Box(modifier = Modifier.fillMaxWidth().aspectRatio(16f/9f)
                 .align(Alignment.BottomEnd)
                 )
                 //contentAlignment = Alignment.CenterEnd)
             {
                 YandexMapScreen()
-            }}
-
-            //YandexMapScreen()
+            }
+            }
 
         }
     }
@@ -99,7 +102,7 @@ fun YandexMapScreen() {
                 map.move(
                     CameraPosition(
                         Point(55.574823, 37.597943), // Москва
-                        90.0f,  // zoom
+                        18.0f,  // zoom
                         0.0f,   // azimuth
                         0.0f    // tilt
                     )
