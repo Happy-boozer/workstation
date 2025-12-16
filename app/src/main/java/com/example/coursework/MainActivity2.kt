@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,17 +27,14 @@ import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.map.CameraPosition
 import com.yandex.mapkit.mapview.MapView
-import com.yandex.runtime.image.ImageProvider
 
 fun read ():String{
+
     val content: String = key().key()
     return content
 }
 
-
 class MainActivity2 : ComponentActivity() {
-
-
     //private lateinit var mapView: MapView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,21 +42,21 @@ class MainActivity2 : ComponentActivity() {
         MapKitFactory.setApiKey(API_Key)
         MapKitFactory.initialize(this)
 
-        val imageProvider = ImageProvider.fromResource(this, R.drawable.img)
-
 
         enableEdgeToEdge()
         setContent {
+            CourseWorkTheme {
             Box(modifier = Modifier.fillMaxSize())
             {
             Box(modifier = Modifier.fillMaxWidth().aspectRatio(16f/9f)
                 .align(Alignment.BottomEnd)
                 )
-                //contentAlignment = Alignment.CenterEnd)
+
             {
                 YandexMapScreen()
-            }
-            }
+            }}}
+
+
 
         }
     }
@@ -71,9 +67,9 @@ class MainActivity2 : ComponentActivity() {
     }
 
     override fun onStop() {
-        super.onStop()
-        MapKitFactory.getInstance().onStop()
 
+        MapKitFactory.getInstance().onStop()
+        super.onStop()
     }
 }
 
@@ -101,7 +97,7 @@ fun YandexMapScreen() {
 
                 map.move(
                     CameraPosition(
-                        Point(55.574823, 37.597943), // Москва
+                        Point(55.751574, 37.573856), // Москва
                         18.0f,  // zoom
                         0.0f,   // azimuth
                         0.0f    // tilt

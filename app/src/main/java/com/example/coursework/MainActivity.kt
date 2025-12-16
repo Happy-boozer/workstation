@@ -45,133 +45,118 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+
             CourseWorkTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+
+                NAVBBAR()
+                val context = LocalContext.current // Получаем текущий Context
+                val intent = Intent(context, MainActivity2::class.java)
+
+
+
+
             }
-            NAVBBAR()
-            val context = LocalContext.current // Получаем текущий Context
-            val intent = Intent(context, MainActivity2::class.java)
-            Button(
-                onClick = {
-                    context.startActivity(intent)
-                },
-                Modifier.padding(horizontal = 100.dp, vertical = 400.dp)
-            ) { Text("Переход")}
 
         }
     }
-}
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
 
-@Composable
-fun SongsScreen(modifier: Modifier = Modifier) {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Text("Songs Screen")
+    @Composable
+    fun SongsScreen(modifier: Modifier = Modifier) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {}
     }
-}
 
-@Composable
-fun AlbumScreen(modifier: Modifier = Modifier) {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Text("Album Screen")
+    @Composable
+    fun AlbumScreen(modifier: Modifier = Modifier) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Text("Album Screen")
+        }
     }
-}
 
-@Composable
-fun PlaylistScreen(modifier: Modifier = Modifier) {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Text("Playlist Screen")
+    @Composable
+    fun PlaylistScreen(modifier: Modifier = Modifier) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Text("Playlist Screen")
+        }
     }
-}
 
-enum class Destination(
-    val route: String,
-    val label: String,
-    val icon: ImageVector,
-    val contentDescription: String
-) {
-    SONGS("songs", "Songs", Icons.Default.Info,"Songs"),
-    ALBUM("album", "Album",Icons.Default.Build, "Album"),
-    PLAYLISTS("playlist", "Playlist",Icons.Default.Create,"Playlist")
-}
-
-@Composable
-fun AppNavHost(
-    navController: NavHostController,
-    startDestination: Destination,
-    modifier: Modifier = Modifier
-) {
-    NavHost(
-        navController,
-        startDestination = startDestination.route
+    enum class Destination(
+        val route: String,
+        val label: String,
+        val icon: ImageVector,
+        val contentDescription: String
     ) {
-        Destination.entries.forEach { destination ->
-            composable(destination.route) {
-                when (destination) {
-                    Destination.SONGS -> SongsScreen()
-                    Destination.ALBUM -> AlbumScreen()
-                    Destination.PLAYLISTS -> PlaylistScreen()
+        SONGS("info", "Info", Icons.Default.Info, "Info"),
+        ALBUM("album", "Album", Icons.Default.Build, "Album"),
+        PLAYLISTS("playlist", "Playlist", Icons.Default.Create, "Playlist")
+    }
+
+    @Composable
+    fun AppNavHost(
+        navController: NavHostController,
+        startDestination: Destination,
+        modifier: Modifier = Modifier
+    ) {
+        NavHost(
+            navController,
+            startDestination = startDestination.route
+        ) {
+            Destination.entries.forEach { destination ->
+                composable(destination.route) {
+                    when (destination) {
+                        Destination.SONGS -> SongsScreen()
+                        Destination.ALBUM -> AlbumScreen()
+                        Destination.PLAYLISTS -> PlaylistScreen()
+                    }
                 }
             }
         }
     }
-}
 
-@Composable
-fun NAVBBAR(modifier: Modifier = Modifier) {
-    val navController = rememberNavController()
-    val startDestination = Destination.SONGS
-    var selectedDestination by rememberSaveable { mutableIntStateOf(startDestination.ordinal) }
-    val _context = LocalContext.current
-    Scaffold(
-        modifier = modifier,
-        bottomBar = {
-            NavigationBar(windowInsets = NavigationBarDefaults.windowInsets) {
-                Destination.entries.forEachIndexed { index, destination ->
-                    NavigationBarItem(
-                        selected = selectedDestination == index,
-                        onClick = {
-                            navController.navigate(route = destination.route)
-                            selectedDestination = index
-                            val context = _context // Получаем текущий Context
-                            val intent = Intent(context, MainActivity2::class.java)
-                            context.startActivity(intent)
-                        },  {
-                            Icon(
-                                destination.icon,
-                                contentDescription = destination.contentDescription
-                            )
+    @Composable
+    fun NAVBBAR(modifier: Modifier = Modifier) {
+        val navController = rememberNavController()
+        val startDestination = Destination.SONGS
+        var selectedDestination by rememberSaveable { mutableIntStateOf(startDestination.ordinal) }
+        val _context = LocalContext.current
+        Scaffold(
+            modifier = modifier,
+            bottomBar = {
+                NavigationBar(windowInsets = NavigationBarDefaults.windowInsets) {
+                    Destination.entries.forEachIndexed { index, destination ->
+                        NavigationBarItem(
+                            selected = selectedDestination == index,
+                            onClick = {
+                                navController.navigate(route = destination.route)
+                                selectedDestination = index
+                                val context = _context // Получаем текущий Context
+                                val intent = Intent(context, MainActivity2::class.java)
+                                context.startActivity(intent)
+                            }, {
+                                Icon(
+                                    destination.icon,
+                                    contentDescription = destination.contentDescription
+                                )
 
-                        },
-                        label = { Text(destination.label) }
-                    )
+                            },
+                            label = { Text(destination.label) }
+                        )
+                    }
                 }
             }
+        ) { contentPadding ->
+            AppNavHost(navController, startDestination, modifier = Modifier.padding(contentPadding))
         }
-    ) { contentPadding ->
-        AppNavHost(navController, startDestination, modifier = Modifier.padding(contentPadding))
+
+
     }
-
-
 }
