@@ -3,6 +3,7 @@ pluginManagement {
         mavenCentral()
         maven {
             url = uri("https://maven.aliyun.com/repository/jcenter")
+            url = uri("https://maven.google.com/")
         }
         google {
             content {
