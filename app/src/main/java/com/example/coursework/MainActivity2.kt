@@ -97,7 +97,7 @@ fun YandexMapScreen() {
 
                 map.move(
                     CameraPosition(
-                        Point(55.751574, 37.573856), // Москва
+                        Point(55.575001, 37.598303), // Москва
                         18.0f,  // zoom
                         0.0f,   // azimuth
                         0.0f    // tilt
