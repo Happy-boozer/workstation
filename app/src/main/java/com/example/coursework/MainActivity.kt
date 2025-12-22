@@ -8,7 +8,11 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Build
@@ -46,14 +50,12 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
 
+
             CourseWorkTheme {
 
                 NAVBBAR()
                 val context = LocalContext.current // Получаем текущий Context
                 val intent = Intent(context, MainActivity2::class.java)
-
-
-
 
             }
 
@@ -63,10 +65,21 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     fun SongsScreen(modifier: Modifier = Modifier) {
+        val context = LocalContext.current
+        val intent1 = Intent(context, ADDCAR::class.java)
         Box(
             modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {}
+            //contentAlignment = Alignment.C
+        ) {
+            Column (modifier = Modifier.align(Alignment.TopEnd)){
+            //Spacer(modifier = Modifier.height(50.dp))
+            Button(modifier = Modifier.padding(30.dp),
+                onClick = {
+                    context.startActivity(intent1)
+                }
+            ){ Text("Добавить автомобиль")}
+        }
+        }
     }
 
     @Composable
@@ -75,7 +88,7 @@ class MainActivity : ComponentActivity() {
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            Text("Album Screen")
+            //Text("Album Screen")
         }
     }
 
@@ -85,7 +98,7 @@ class MainActivity : ComponentActivity() {
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            Text("Playlist Screen")
+            //Text("Playlist Screen")
         }
     }
 

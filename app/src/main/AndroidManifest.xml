@@ -16,6 +16,11 @@
         android:theme="@style/Theme.CourseWork"
         tools:targetApi="31">
         <activity
+            android:name=".ADDCAR"
+            android:exported="false"
+            android:label="@string/title_activity_addcar"
+            android:theme="@style/Theme.CourseWork" />
+        <activity
             android:name=".Registration"
             android:exported="false"
             android:label="@string/title_activity_registration"
