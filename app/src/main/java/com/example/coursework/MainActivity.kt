@@ -54,8 +54,8 @@ class MainActivity : ComponentActivity() {
             CourseWorkTheme {
 
                 NAVBBAR()
-                val context = LocalContext.current // Получаем текущий Context
-                val intent = Intent(context, MainActivity2::class.java)
+                //val context = LocalContext.current // Получаем текущий Context
+                //val intent = Intent(context, MainActivity2::class.java)
 
             }
 
@@ -73,7 +73,7 @@ class MainActivity : ComponentActivity() {
         ) {
             Column (modifier = Modifier.align(Alignment.TopEnd)){
             //Spacer(modifier = Modifier.height(50.dp))
-            Button(modifier = Modifier.padding(30.dp),
+            Button(modifier = Modifier.padding(40.dp),
                 onClick = {
                     context.startActivity(intent1)
                 }
@@ -88,7 +88,7 @@ class MainActivity : ComponentActivity() {
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            //Text("Album Screen")
+            Text("Album Screen")
         }
     }
 
@@ -98,7 +98,7 @@ class MainActivity : ComponentActivity() {
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            //Text("Playlist Screen")
+            Text("Playlist Screen")
         }
     }
 
@@ -141,6 +141,7 @@ class MainActivity : ComponentActivity() {
         val startDestination = Destination.SONGS
         var selectedDestination by rememberSaveable { mutableIntStateOf(startDestination.ordinal) }
         val _context = LocalContext.current
+        val intent = Intent(_context, MainActivity2::class.java)
         Scaffold(
             modifier = modifier,
             bottomBar = {
@@ -151,10 +152,11 @@ class MainActivity : ComponentActivity() {
                             onClick = {
                                 navController.navigate(route = destination.route)
                                 selectedDestination = index
-                                val context = _context // Получаем текущий Context
-                                val intent = Intent(context, MainActivity2::class.java)
-                                context.startActivity(intent)
-                            }, {
+                                //val context = _context // Получаем текущий Context
+
+                                _context.startActivity(intent)
+                            },
+                            {
                                 Icon(
                                     destination.icon,
                                     contentDescription = destination.contentDescription
