@@ -80,16 +80,14 @@ class MainActivity : ComponentActivity() {
             ){ Text("Добавить автомобиль")}
         }
         }
+            //context.startActivity(intent)
     }
 
     @Composable
     fun AlbumScreen(modifier: Modifier = Modifier) {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            Text("Album Screen")
-        }
+        val context = LocalContext.current
+        val intent = Intent(context, MainActivity2::class.java)
+        context.startActivity(intent)
     }
 
     @Composable
@@ -108,8 +106,8 @@ class MainActivity : ComponentActivity() {
         val icon: ImageVector,
         val contentDescription: String
     ) {
-        SONGS("info", "Info", Icons.Default.Info, "Info"),
-        ALBUM("album", "Album", Icons.Default.Build, "Album"),
+        SONGS("cars", "Cars", Icons.Default.Info, "Cars"),
+        ALBUM("info", "Info", Icons.Default.Build, "Info"),
         PLAYLISTS("playlist", "Playlist", Icons.Default.Create, "Playlist")
     }
 
@@ -141,7 +139,7 @@ class MainActivity : ComponentActivity() {
         val startDestination = Destination.SONGS
         var selectedDestination by rememberSaveable { mutableIntStateOf(startDestination.ordinal) }
         val _context = LocalContext.current
-        val intent = Intent(_context, MainActivity2::class.java)
+
         Scaffold(
             modifier = modifier,
             bottomBar = {
@@ -154,7 +152,7 @@ class MainActivity : ComponentActivity() {
                                 selectedDestination = index
                                 //val context = _context // Получаем текущий Context
 
-                                _context.startActivity(intent)
+
                             },
                             {
                                 Icon(

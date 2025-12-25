@@ -20,6 +20,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -31,7 +32,9 @@ import com.yandex.mapkit.MapKit
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.map.CameraPosition
+import com.yandex.mapkit.map.IconStyle
 import com.yandex.mapkit.mapview.MapView
+import com.yandex.runtime.image.ImageProvider
 
 fun read ():String{
 
@@ -55,7 +58,7 @@ class MainActivity2 : ComponentActivity() {
             CourseWorkTheme {
             Box(modifier = Modifier.fillMaxSize())
             {
-                Button(modifier = Modifier.padding(40.dp),
+                Button(modifier = Modifier.padding(50.dp),
                     onClick = {
                         context.startActivity(intent)
                     },
@@ -110,9 +113,15 @@ fun GreetingPreview2() {
 
 @Composable
 fun YandexMapScreen() {
+    val context = LocalContext.current
+    val imageProvider = ImageProvider.fromResource(context, R.drawable.img)
+
+
+
     AndroidView(
         factory = { context ->
             MapView(context).apply {
+                val map = mapWindow.map
 
                 map.move(
                     CameraPosition(
@@ -122,8 +131,15 @@ fun YandexMapScreen() {
                         0.0f    // tilt
                     )
                 )
+                val placemark = map.mapObjects.
+                addPlacemark().apply { geometry = Point(55.575001, 37.598303)
+                    setIcon(imageProvider, IconStyle().apply { scale = 0.3f })}
             }
+
+
         },
+
         modifier = Modifier.fillMaxSize()
     )
+
 }
