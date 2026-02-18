@@ -47,8 +47,8 @@ class PreLOGIN : ComponentActivity() {
             val intent1 = Intent(context, MainActivity::class.java)
             val intent2 = Intent(context, Registration::class.java)
             //var text  by remember { mutableStateOf("") }
-            val message1 = remember{mutableStateOf("")}
-            val message2 = remember{mutableStateOf("")}
+            val login = remember{mutableStateOf("")}
+            val password = remember{mutableStateOf("")}
 
             CourseWorkTheme {
 
@@ -57,20 +57,25 @@ class PreLOGIN : ComponentActivity() {
                         Spacer(modifier = Modifier.height(30.dp))
                         Text("Номер телефона")
                         //Text(message.value, fontSize = 28.sp)
-                        TextField(value = message1.value, onValueChange = {newText -> message1.value = newText},
+                        TextField(value = login.value, onValueChange = {newText -> login.value = newText},
                             textStyle = TextStyle(fontSize = 28.sp),
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone)
                         )
                         Spacer(modifier = Modifier.height(16.dp))
                         Text("Пароль")
-                        TextField(value = message2.value, onValueChange = {newText -> message2.value = newText},
+                        TextField(value = password.value, onValueChange = {newText -> password.value = newText},
                             visualTransformation = { filter(it) }
                         )
                     }
                     Row (modifier = Modifier.align(Alignment.Center)){
                         Button(
                             onClick = {
+                                if (password.value == "admin" &&  login.value == "1"){
+
+                                }
+                                else{
                                 context.startActivity(intent1)
+                                }
                             },
                         )
                         { Text("Войти")}

@@ -108,15 +108,23 @@ class ADDCAR : ComponentActivity() {
                         Spacer(modifier = Modifier.height(30.dp))
                         Button(
                             onClick = {
+                                //занести данные в бд
                                 Toast.makeText(context, "Данные сохранены", Toast.LENGTH_SHORT).show()
                                 context.startActivity(intent1)
                             },
                         )
                         { Text("Зарегистрировать автомобиль")}
+                        Spacer(modifier = Modifier.height(30.dp))
+                        Button(
+                            onClick = {
+                                context.startActivity(intent1)
+                            },
+                        )
+                        { Text("Вернуться")}
+
 
 
                     }
-
             }
         }
     }
@@ -126,7 +134,8 @@ class ADDCAR : ComponentActivity() {
     @Composable
 
     fun AutocompleteTextField(
-        suggestions: List<String> = listOf("Ford", "Kia", "Chevrolet", "Nissan", "Land Rover"),
+        suggestions: List<String> = listOf("Ford", "Kia", "Chevrolet", "Nissan", "Land Rover",
+            "Toyota", "Dodge", "Cadilac", "Subaru", "Mitsubishi", "Hundai"),
         onItemSelected: (String) -> Unit
     ) {
         var query by remember { mutableStateOf("") }
