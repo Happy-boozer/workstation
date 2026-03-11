@@ -3,6 +3,7 @@ package com.example.coursework
 import android.content.Intent
 import android.graphics.Paint
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -35,9 +36,16 @@ import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
 import com.example.coursework.ui.theme.CourseWorkTheme
+import kotlinx.io.IOException
+import okhttp3.OkHttpClient
+import okhttp3.Request
 
 class PreLOGIN : ComponentActivity() {
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -74,6 +82,9 @@ class PreLOGIN : ComponentActivity() {
 
                                 }
                                 else{
+                                    val workRequest = OneTimeWorkRequestBuilder<AuthWorkerGett>().build()
+                                    WorkManager.getInstance(context).enqueue(workRequest)
+                                    //getting()
                                 context.startActivity(intent1)
                                 }
                             },
@@ -82,6 +93,7 @@ class PreLOGIN : ComponentActivity() {
                         Spacer(modifier = Modifier.width(16.dp))
                         Button(
                             onClick = {
+
                                 context.startActivity(intent2)
                             },
                         )

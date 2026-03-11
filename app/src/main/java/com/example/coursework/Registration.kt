@@ -2,6 +2,7 @@ package com.example.coursework
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -31,6 +32,24 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.coursework.ui.theme.CourseWorkTheme
+import io.ktor.client.HttpClient
+import io.ktor.client.request.get
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+
+private const val BASE_URL = "https://httpbin.org"
+private const val GET_UUID = "$BASE_URL/uuid"
+
+/*fun sinmple(){
+    val client = HttpClient()
+
+    GlobalScope.launch(Dispatchers.IO) {
+        val data = client.get<String>(GET_UUID)
+            // Log.i("$BASE_TAG Simple case ", data)
+    }
+}*/
+
 
 class Registration : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -88,6 +107,7 @@ class Registration : ComponentActivity() {
                             onClick = {
                                 Toast.makeText(context, "Данные сохранены", Toast.LENGTH_SHORT).show()
                                 //context.startActivity(intent2)
+
                             }
                         )
                         { Text("Зарегистрироваться")}

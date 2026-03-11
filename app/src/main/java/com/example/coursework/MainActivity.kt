@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.drawable.Icon
 import android.os.Bundle
 import android.renderscript.Matrix3f
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -37,11 +38,19 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.coursework.ui.theme.CourseWorkTheme
+import io.ktor.client.HttpClient
+import io.ktor.http.HttpStatusCode
+import io.ktor.client.engine.cio.CIO
+import io.ktor.client.request.get
+//import io.ktor.client.response.HttpResponse
+import io.ktor.client.statement.HttpResponse
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
 
@@ -133,8 +142,16 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    private suspend fun makeRequest(): HttpStatusCode {
+        val client = HttpClient(CIO)
+        val response: HttpResponse = client.get("10.0.2.15/24")
+        println(response.status)
+        return response.status
+    }
+
     @Composable
     fun NAVBBAR(modifier: Modifier = Modifier) {
+
         val navController = rememberNavController()
         val startDestination = Destination.SONGS
         var selectedDestination by rememberSaveable { mutableIntStateOf(startDestination.ordinal) }
@@ -148,9 +165,15 @@ class MainActivity : ComponentActivity() {
                         NavigationBarItem(
                             selected = selectedDestination == index,
                             onClick = {
+                                lifecycleScope.launch {
+                                    val result = makeRequest()
+                                    Log.d("D", "подрубились")
+                                    //println(result)
+                                }
                                 navController.navigate(route = destination.route)
                                 selectedDestination = index
                                 //val context = _context // Получаем текущий Context
+
 
 
                             },
