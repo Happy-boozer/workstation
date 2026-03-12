@@ -31,6 +31,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.work.Data
+import androidx.work.OneTimeWorkRequestBuilder
 import com.example.coursework.ui.theme.CourseWorkTheme
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
@@ -105,6 +107,14 @@ class Registration : ComponentActivity() {
                         Spacer(modifier = Modifier.width(16.dp))
                         Button(
                             onClick = {
+                                val Data = Data.Builder()
+                                    .putString("name", message3.value + message4.value)
+                                    .putString("phone_number", message1.value)
+                                    .putString("password", message2.value)
+                                    .build()
+                                val myWorkRequest1 = OneTimeWorkRequestBuilder<RegPostWorker>()
+                                        .setInputData(Data)
+                                        .build()
                                 Toast.makeText(context, "Данные сохранены", Toast.LENGTH_SHORT).show()
                                 //context.startActivity(intent2)
 
