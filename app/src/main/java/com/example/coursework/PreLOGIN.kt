@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
+import androidx.work.workDataOf
 import com.example.coursework.ui.theme.CourseWorkTheme
 import kotlinx.io.IOException
 import okhttp3.OkHttpClient
@@ -82,6 +83,11 @@ class PreLOGIN : ComponentActivity() {
 
                                 }
                                 else{
+                                    val myData = workDataOf("key_name" to login.value)
+                                    val request = OneTimeWorkRequestBuilder<AuthWorkerSend>()
+                                        .setInputData(myData)
+                                        .build()
+                                    WorkManager.getInstance(context).enqueue(request)
                                     val workRequest = OneTimeWorkRequestBuilder<AuthWorkerGett>().build()
                                     WorkManager.getInstance(context).enqueue(workRequest)
                                     //getting()
