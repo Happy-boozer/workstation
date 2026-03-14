@@ -1,5 +1,7 @@
 package com.example.coursework
 
+
+
 import android.content.Context
 import android.util.Log
 import androidx.work.ListenableWorker
@@ -12,18 +14,19 @@ import okhttp3.Request
 import okhttp3.RequestBody
 
 
-class AuthWorkerSend(context: Context, params: WorkerParameters) : Worker(context, params) {
+class SendCarWorker(context: Context, params: WorkerParameters) : Worker(context, params) {
 
-    fun sending(phone_number: String, password: String){
+    fun sending(name: String, plate: String, mark: String){
         val client = OkHttpClient()
 
         val formBody: RequestBody = FormBody.Builder()
-            .add("phone_number", phone_number)
-            .add("password", password)// Данные поля
+            .add("name", name)
+            .add("plate", plate)
+            .add("mark", mark)// Данные поля
             .build()
 
         val request = Request.Builder()
-            .url("http://192.168.1.80:8080/users")
+            .url("http://192.168.1.80:8080/car")
             .post(formBody)
             .build()
 
@@ -49,9 +52,10 @@ class AuthWorkerSend(context: Context, params: WorkerParameters) : Worker(contex
 
     override fun doWork(): ListenableWorker.Result {
         // Фоновая задача
-        val phone_number = inputData.getString("login").toString()
-        val password = inputData.getString("password").toString()
-        sending(phone_number, password)
+        val login = inputData.getString("login").toString()
+        val plate = inputData.getString("plate").toString()
+        val mark = inputData.getString("mark").toString()
+        sending(login, plate, mark = mark)
         return ListenableWorker.Result.success()
     }
 }

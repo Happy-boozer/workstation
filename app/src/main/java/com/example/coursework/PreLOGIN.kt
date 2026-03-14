@@ -36,6 +36,7 @@ import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.work.Data
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
@@ -83,9 +84,12 @@ class PreLOGIN : ComponentActivity() {
 
                                 }
                                 else{
-                                    val myData = workDataOf("key_name" to login.value)
+                                    val Data = Data.Builder()
+                                        .putString("login", login.value)
+                                        .putString("password", password.value)
+                                        .build()
                                     val request = OneTimeWorkRequestBuilder<AuthWorkerSend>()
-                                        .setInputData(myData)
+                                        .setInputData(Data)
                                         .build()
                                     WorkManager.getInstance(context).enqueue(request)
                                     val workRequest = OneTimeWorkRequestBuilder<AuthWorkerGett>().build()
