@@ -1,7 +1,6 @@
-package com.example.coursework.ui.theme
+package com.example.coursework.presentation.theme
 
 import androidx.compose.ui.graphics.Color
-import com.example.coursework.ui.theme.primaryContainerLight
 
 val Purple80 = Color(0xFFD0BCFF)
 val PurpleGrey80 = Color(0xFFCCC2DC)

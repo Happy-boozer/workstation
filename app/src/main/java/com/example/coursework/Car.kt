@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 
 
 @Entity(tableName = "cars")
-class Car {
+class КCar {
 
     @PrimaryKey(autoGenerate = true)
     @NonNull

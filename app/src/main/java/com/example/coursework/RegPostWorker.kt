@@ -25,7 +25,7 @@ class RegPostWorker(context: Context, params: WorkerParameters) : Worker(context
 
 
         val request = Request.Builder()
-            .url("http://192.168.1.80:8080/user")
+            .url("http://10.192.208.1.80:8080/user")
             .post(formBody)
             .build()
 
@@ -53,6 +53,7 @@ class RegPostWorker(context: Context, params: WorkerParameters) : Worker(context
         val name = getInputData().getString("name").toString()
         val phone_number = getInputData().getString("phone_number").toString()
         val password = getInputData().getString("password").toString()
+        Log.d("RRR","name = $name")
         sending(name = name, phone_number = phone_number, password = password)
         return Result.success()
     }
