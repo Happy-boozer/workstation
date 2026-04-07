@@ -25,7 +25,7 @@ class RegPostWorker(context: Context, params: WorkerParameters) : Worker(context
 
 
         val request = Request.Builder()
-            .url("http://10.192.208.1.80:8080/user")
+            .url("http://172.20.10.4.80:8080/usver")
             .post(formBody)
             .build()
 

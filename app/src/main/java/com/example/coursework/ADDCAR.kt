@@ -47,9 +47,9 @@ class ADDCAR : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            val message3 = remember{mutableStateOf("")}
-            val message4 = remember{mutableStateOf("")}
-            val message1 = remember{mutableStateOf("")}
+            val message3 = remember { mutableStateOf("") }
+            val message4 = remember { mutableStateOf("") }
+            val message1 = remember { mutableStateOf("") }
             var filteredSuggestions by remember { mutableStateOf(emptyList<String>()) }
             var showSuggestions by remember { mutableStateOf(false) }
 
@@ -58,32 +58,33 @@ class ADDCAR : ComponentActivity() {
 
             CourseWorkTheme {
 
-                Box(modifier = Modifier.fillMaxSize()) {
-                    Column (modifier = Modifier.align(Alignment.TopCenter)){
-                        Spacer(modifier = Modifier.height(30.dp))
+                Box(modifier = Modifier.Companion.fillMaxSize()) {
+                    Column(modifier = Modifier.Companion.align(Alignment.Companion.TopCenter)) {
+                        Spacer(modifier = Modifier.Companion.height(30.dp))
                         Text("Имя")
                         //Text(message.value, fontSize = 28.sp)
-                        TextField(modifier = Modifier.fillMaxWidth()
-                            , value = message3.value,
-                            onValueChange = { newText -> message3.value = newText},
+                        TextField(
+                            modifier = Modifier.Companion.fillMaxWidth(),
+                            value = message3.value,
+                            onValueChange = { newText -> message3.value = newText },
                             textStyle = TextStyle(fontSize = 28.sp),
 
                             )
-                        Spacer(modifier = Modifier.height(30.dp))
+                        Spacer(modifier = Modifier.Companion.height(30.dp))
                         Text("Госномер")
                         //Text(message.value, fontSize = 28.sp)
-                        TextField(modifier = Modifier.fillMaxWidth(),
+                        TextField(
+                            modifier = Modifier.Companion.fillMaxWidth(),
                             value = message4.value,
-                            onValueChange = { newText -> message4.value = newText},
+                            onValueChange = { newText -> message4.value = newText },
                             textStyle = TextStyle(fontSize = 28.sp),
 
                             )
-                        Spacer(modifier = Modifier.height(30.dp))
+                        Spacer(modifier = Modifier.Companion.height(30.dp))
                         Text("Марка автомобиля")
                         //Text(message.value, fontSize = 28.sp)
 
-                        AutocompleteTextField(){}
-
+                        AutocompleteTextField() {}
 
 
 //                        TextField(value = message1.value,
@@ -93,32 +94,32 @@ class ADDCAR : ComponentActivity() {
 //                        )
 
 
-                            //AutocompleteTextField(){}
+                        //AutocompleteTextField(){}
 
-                }
-                    Row (modifier = Modifier.align(Alignment.Center)){
-                        Spacer(modifier = Modifier.height(30.dp))
+                    }
+                    Row(modifier = Modifier.Companion.align(Alignment.Companion.Center)) {
+                        Spacer(modifier = Modifier.Companion.height(30.dp))
                         Button(
                             onClick = {
                                 //занести данные в бд
-                                Toast.makeText(context, "Данные сохранены", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context, "Данные сохранены", Toast.LENGTH_SHORT)
+                                    .show()
                                 context.startActivity(intent1)
                             },
                         )
-                        { Text("Зарегистрировать автомобиль")}
-                        Spacer(modifier = Modifier.height(30.dp))
+                        { Text("Зарегистрировать автомобиль") }
+                        Spacer(modifier = Modifier.Companion.height(30.dp))
                         Button(
                             onClick = {
                                 context.startActivity(intent1)
                             },
                         )
-                        { Text("Вернуться")}
-
+                        { Text("Вернуться") }
 
 
                     }
+                }
             }
-        }
     }
 }
 
@@ -146,25 +147,25 @@ class ADDCAR : ComponentActivity() {
                     showSuggestions = newQuery.isNotEmpty() && filteredSuggestions.isNotEmpty()
                 },
                 label = { Text("Введите текст и выберите вариант") },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.Companion.fillMaxWidth(),
                 singleLine = true
             )
 
             if (showSuggestions) {
                 // Используем Surface вместо Card
                 Surface(
-                    modifier = Modifier
-                        .fillMaxWidth().background(Color.Blue)
+                    modifier = Modifier.Companion
+                        .fillMaxWidth().background(Color.Companion.Blue)
                         .heightIn(max = 200.dp),
                     //elevation = 4.dp,
                     //shape = RoundedCornerShape(4.dp)
                 ) {
                     Column(
-                        modifier = Modifier.verticalScroll(rememberScrollState())
+                        modifier = Modifier.Companion.verticalScroll(rememberScrollState())
                     ) {
                         filteredSuggestions.forEachIndexed { index, suggestion ->
                             Box(
-                                modifier = Modifier
+                                modifier = Modifier.Companion
                                     .fillMaxWidth()
                                     .clickable(
                                         interactionSource = remember { MutableInteractionSource() },
@@ -177,7 +178,7 @@ class ADDCAR : ComponentActivity() {
                             ) {
                                 Text(
                                     text = suggestion,
-                                    modifier = Modifier
+                                    modifier = Modifier.Companion
                                         .fillMaxWidth()
                                         .padding(16.dp)
                                 )
@@ -186,7 +187,7 @@ class ADDCAR : ComponentActivity() {
                             if (index < filteredSuggestions.lastIndex) {
                                 Divider(
                                     thickness = 0.5.dp,
-                                    color = Color.LightGray
+                                    color = Color.Companion.LightGray
                                 )
                             }
                         }
@@ -196,4 +197,3 @@ class ADDCAR : ComponentActivity() {
         }
     }
 }
-

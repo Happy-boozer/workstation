@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
@@ -60,61 +61,71 @@ class Registration : ComponentActivity() {
 
             CourseWorkTheme {
                 Box(modifier = Modifier.fillMaxSize()) {
-                    Column (modifier = Modifier.align(Alignment.TopCenter)){
+                    Column (modifier = Modifier.align(Alignment.TopCenter)) {
                         Spacer(modifier = Modifier.height(30.dp))
                         Text("Имя")
                         //Text(message.value, fontSize = 28.sp)
-                        TextField(value = message3.value, onValueChange = {newText -> message3.value = newText},
+                        TextField(
+                            value = message3.value,
+                            onValueChange = { newText -> message3.value = newText },
                             textStyle = TextStyle(fontSize = 28.sp),
 
-                        )
+                            )
                         Spacer(modifier = Modifier.height(30.dp))
                         Text("Фамилия")
                         //Text(message.value, fontSize = 28.sp)
-                        TextField(value = message4.value, onValueChange = {newText -> message4.value = newText},
+                        TextField(
+                            value = message4.value,
+                            onValueChange = { newText -> message4.value = newText },
                             textStyle = TextStyle(fontSize = 28.sp),
 
-                        )
+                            )
                         Spacer(modifier = Modifier.height(30.dp))
                         Text("Номер телефона")
                         //Text(message.value, fontSize = 28.sp)
-                        TextField(value = message1.value, onValueChange = {newText -> message1.value = newText},
+                        TextField(
+                            value = message1.value,
+                            onValueChange = { newText -> message1.value = newText },
                             textStyle = TextStyle(fontSize = 28.sp),
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone)
                         )
                         Spacer(modifier = Modifier.height(16.dp))
                         Text("Пароль")
-                        TextField(value = message2.value, onValueChange = {newText -> message2.value = newText},
+                        TextField(
+                            value = message2.value,
+                            onValueChange = { newText -> message2.value = newText },
                             //visualTransformation = { filter(it) }
                         )
-                    }
-                    Row (modifier = Modifier.align(Alignment.Center)){
-                        Button(
-                            onClick = {
-                                context.startActivity(intent1)
-                            },
-                        )
-                        { Text("Войти")}
-                        Spacer(modifier = Modifier.width(16.dp))
-                        Button(
-                            onClick = {
-                                val Data = Data.Builder()
-                                    .putString("name", message3.value + message4.value)
-                                    .putString("phone_number", message1.value)
-                                    .putString("password", message2.value)
-                                    .build()
-                                val myWorkRequest1 = OneTimeWorkRequestBuilder<RegPostWorker>()
+
+                        Row(modifier = Modifier.fillMaxWidth()) {
+                            Button(
+                                onClick = {
+                                    context.startActivity(intent1)
+                                },
+                            )
+                            { Text("Войти") }
+                            Spacer(modifier = Modifier.width(16.dp))
+                            Button(
+                                onClick = {
+                                    val Data = Data.Builder()
+                                        .putString("name", message3.value + message4.value)
+                                        .putString("phone_number", message1.value)
+                                        .putString("password", message2.value)
+                                        .build()
+                                    val myWorkRequest1 = OneTimeWorkRequestBuilder<RegPostWorker>()
                                         .setInputData(Data)
                                         .build()
-                                WorkManager.getInstance(context).enqueue(myWorkRequest1)
-                                Toast.makeText(context, "Данные сохранены", Toast.LENGTH_SHORT).show()
-                                //context.startActivity(intent2)
+                                    WorkManager.getInstance(context).enqueue(myWorkRequest1)
+                                    Toast.makeText(context, "Данные сохранены", Toast.LENGTH_SHORT)
+                                        .show()
+                                    //context.startActivity(intent2)
 
-                            }
-                        )
-                        { Text("Зарегистрироваться")}
+                                }
+                            )
+                            { Text("Зарегистрироваться") }
+                        }
 
-        }
+                    }
     }
 }
 

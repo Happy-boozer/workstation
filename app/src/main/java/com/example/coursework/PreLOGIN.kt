@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
@@ -64,8 +65,8 @@ class PreLOGIN : ComponentActivity() {
                         TextField(value = password.value, onValueChange = {newText -> password.value = newText},
                             visualTransformation = { filter(it) }
                         )
-                    }
-                    Row (modifier = Modifier.align(Alignment.Center)){
+
+                    Row (modifier = Modifier.fillMaxWidth()){
                         Button(
                             onClick = {
                                 if (password.value == "admin" &&  login.value == "1"){
@@ -95,7 +96,7 @@ class PreLOGIN : ComponentActivity() {
                                 context.startActivity(intent2)
                             },
                         )
-                        { Text("Зарегистрироваться")}
+                        { Text("Зарегистрироваться")}}
 
                     }
                 }
