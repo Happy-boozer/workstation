@@ -16,17 +16,19 @@ import okhttp3.RequestBody
 
 class SendCarWorker(context: Context, params: WorkerParameters) : Worker(context, params) {
 
-    fun sending(name: String, plate: String, mark: String){
+    fun sending(name: String, plate: String,  VIN: String, user_login: String){
         val client = OkHttpClient()
 
         val formBody: RequestBody = FormBody.Builder()
             .add("name", name)
             .add("plate", plate)
-            .add("mark", mark)// Данные поля
+            .add("VIN", VIN)
+            .add("login", user_login)
+
             .build()
 
         val request = Request.Builder()
-            .url("http://192.168.1.80:8080/car")
+            .url("http://192.168.1.80:8080/insert_car")
             .post(formBody)
             .build()
 
@@ -52,10 +54,15 @@ class SendCarWorker(context: Context, params: WorkerParameters) : Worker(context
 
     override fun doWork(): ListenableWorker.Result {
         // Фоновая задача
-        val login = inputData.getString("login").toString()
+        val name = inputData.getString("name").toString()
         val plate = inputData.getString("plate").toString()
-        val mark = inputData.getString("mark").toString()
-        sending(login, plate, mark = mark)
+        val VIN = inputData.getString("VIN").toString()
+        val login = inputData.getString("login").toString()
+        Log.d("name", "${name}")
+        Log.d("plate", "${plate}")
+        Log.d("VIN", "${VIN}")
+        Log.d("login", "${login}")
+        sending(name, plate,  VIN, login)
         return ListenableWorker.Result.success()
     }
 }

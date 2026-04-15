@@ -37,7 +37,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.coursework.presentation.theme.CourseWorkTheme
-import com.example.coursework.ADDCAR
 import io.ktor.client.HttpClient
 import io.ktor.http.HttpStatusCode
 import io.ktor.client.engine.cio.CIO
@@ -50,6 +49,8 @@ import kotlinx.coroutines.launch
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val name: String? = intent.getStringExtra("login")
+        Log.d("LOGIN", "$name")
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
@@ -57,7 +58,7 @@ class MainActivity : ComponentActivity() {
 
             CourseWorkTheme {
 
-                NAVBBAR()
+                NAVBBAR(name =name)
                 //val context = LocalContext.current // Получаем текущий Context
                 //val intent = Intent(context, MainActivity2::class.java)
 
@@ -68,7 +69,7 @@ class MainActivity : ComponentActivity() {
 
 
     @Composable
-    fun SongsScreen(modifier: Modifier = Modifier) {
+    fun SongsScreen(modifier: Modifier = Modifier, name: String?) {
         val context = LocalContext.current
         val intent1 = Intent(context, ADDCAR::class.java)
         Box(
@@ -79,6 +80,7 @@ class MainActivity : ComponentActivity() {
             //Spacer(modifier = Modifier.height(50.dp))
             Button(modifier = Modifier.padding(40.dp),
                 onClick = {
+                    intent1.putExtra("login", "${name}")
                     context.startActivity(intent1)
                 }
             ){ Text("Добавить автомобиль")}
@@ -117,6 +119,7 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     fun AppNavHost(
+        name: String?,
         navController: NavHostController,
         startDestination: Destination,
         modifier: Modifier = Modifier
@@ -128,7 +131,7 @@ class MainActivity : ComponentActivity() {
             Destination.entries.forEach { destination ->
                 composable(destination.route) {
                     when (destination) {
-                        Destination.SONGS -> SongsScreen()
+                        Destination.SONGS -> SongsScreen(name = name)
                         Destination.ALBUM -> AlbumScreen()
                         Destination.PLAYLISTS -> PlaylistScreen()
                     }
@@ -145,7 +148,7 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    fun NAVBBAR(modifier: Modifier = Modifier) {
+    fun NAVBBAR(modifier: Modifier = Modifier, name: String?) {
 
         val navController = rememberNavController()
         val startDestination = Destination.SONGS
@@ -185,7 +188,7 @@ class MainActivity : ComponentActivity() {
                 }
             }
         ) { contentPadding ->
-            AppNavHost(navController, startDestination, modifier = Modifier.padding(contentPadding))
+            AppNavHost(name = name, navController, startDestination, modifier = Modifier.padding(contentPadding))
         }
 
 

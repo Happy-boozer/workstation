@@ -3,6 +3,7 @@ package com.example.coursework
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -73,7 +74,6 @@ class PreLOGIN : ComponentActivity() {
                         Button(
                             onClick = {
                                 if (password.value == "admin" &&  login.value == "1"){
-
                                 }
                                 else{
                                     val Data = Data.Builder()
@@ -99,9 +99,11 @@ class PreLOGIN : ComponentActivity() {
                                                 Log.d("RESULT", response ?: "null")
 
                                                 if (response == "ok") {
+                                                    intent1.putExtra("login", login.value)
                                                     context.startActivity(intent1)
                                                 } else {
                                                     Log.d("ERROR", "Неверные данные или ошибка")
+                                                    Toast.makeText(context, "Неверные данные", Toast.LENGTH_LONG).show()
                                                 }
                                             }
                                         }

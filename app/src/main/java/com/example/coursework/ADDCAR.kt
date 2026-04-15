@@ -2,6 +2,7 @@ package com.example.coursework
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -40,6 +41,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.work.Data
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
 import com.example.coursework.presentation.theme.CourseWorkTheme
 
 class ADDCAR : ComponentActivity() {
@@ -47,9 +51,10 @@ class ADDCAR : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            val message3 = remember { mutableStateOf("") }
-            val message4 = remember { mutableStateOf("") }
-            val message1 = remember { mutableStateOf("") }
+            val name = remember { mutableStateOf("") }
+            val VIN = remember { mutableStateOf("") }
+            val plate = remember { mutableStateOf("") }
+            val user_login = intent.getStringExtra("login")
             var filteredSuggestions by remember { mutableStateOf(emptyList<String>()) }
             var showSuggestions by remember { mutableStateOf(false) }
 
@@ -61,26 +66,40 @@ class ADDCAR : ComponentActivity() {
                 Box(modifier = Modifier.Companion.fillMaxSize()) {
                     Column(modifier = Modifier.Companion.align(Alignment.Companion.TopCenter)) {
                         Spacer(modifier = Modifier.Companion.height(30.dp))
+                        //--
                         Text("Имя")
                         //Text(message.value, fontSize = 28.sp)
                         TextField(
                             modifier = Modifier.Companion.fillMaxWidth(),
-                            value = message3.value,
-                            onValueChange = { newText -> message3.value = newText },
+                            value = name.value,
+                            onValueChange = { newText -> name.value = newText },
                             textStyle = TextStyle(fontSize = 28.sp),
 
                             )
                         Spacer(modifier = Modifier.Companion.height(30.dp))
+                        //--
                         Text("Госномер")
+
+                        TextField(
+                            modifier = Modifier.Companion.fillMaxWidth(),
+                            value = plate.value,
+                            onValueChange = { newText -> plate.value = newText },
+                            textStyle = TextStyle(fontSize = 28.sp),
+
+                            )
+                        Spacer(modifier = Modifier.Companion.height(30.dp))
+                        //--
+                        Text("VIN - номер")
                         //Text(message.value, fontSize = 28.sp)
                         TextField(
                             modifier = Modifier.Companion.fillMaxWidth(),
-                            value = message4.value,
-                            onValueChange = { newText -> message4.value = newText },
+                            value = VIN.value,
+                            onValueChange = { newText -> VIN.value = newText },
                             textStyle = TextStyle(fontSize = 28.sp),
 
                             )
                         Spacer(modifier = Modifier.Companion.height(30.dp))
+                        //--
                         Text("Марка автомобиля")
                         //Text(message.value, fontSize = 28.sp)
 
@@ -96,18 +115,35 @@ class ADDCAR : ComponentActivity() {
 
                         //AutocompleteTextField(){}
 
-                    }
-                    Row(modifier = Modifier.Companion.align(Alignment.Companion.Center)) {
+
+                    Row(modifier = Modifier.fillMaxWidth()) {
                         Spacer(modifier = Modifier.Companion.height(30.dp))
                         Button(
                             onClick = {
                                 //занести данные в бд
+                                val Data = Data.Builder()
+                                    .putString("login", user_login)
+                                    .putString("VIN", VIN.value)
+                                    .putString("name", name.value)
+                                    .putString("plate", plate.value)
+                                    .build()
+                                val request = OneTimeWorkRequestBuilder<SendCarWorker>()
+                                    .setInputData(Data)
+                                    .build()
+                                val workManager = WorkManager.getInstance(context)
+                                workManager.enqueue(request)
+
+                                Log.d("WORKER_TEST", "Enqueue worker")
+
+                                WorkManager.getInstance(context).enqueue(request)
+
                                 Toast.makeText(context, "Данные сохранены", Toast.LENGTH_SHORT)
                                     .show()
                                 context.startActivity(intent1)
                             },
                         )
                         { Text("Зарегистрировать автомобиль") }
+                    }
                         Spacer(modifier = Modifier.Companion.height(30.dp))
                         Button(
                             onClick = {
