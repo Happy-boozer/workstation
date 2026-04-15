@@ -2,6 +2,7 @@ package com.example.coursework
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -29,6 +30,7 @@ import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.work.Data
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
@@ -42,6 +44,7 @@ class PreLOGIN : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             //val phone = remember{mutableStateOf("")}
+            val lifecycleOwner = LocalLifecycleOwner.current
             val context = LocalContext.current // Получаем текущий Context
             val intent1 = Intent(context, MainActivity::class.java)
             val intent2 = Intent(context, Registration::class.java)
@@ -80,11 +83,31 @@ class PreLOGIN : ComponentActivity() {
                                     val request = OneTimeWorkRequestBuilder<AuthWorkerSend>()
                                         .setInputData(Data)
                                         .build()
+                                    val workManager = WorkManager.getInstance(context)
+                                    workManager.enqueue(request)
+
+                                    Log.d("WORKER_TEST", "Enqueue worker")
+
                                     WorkManager.getInstance(context).enqueue(request)
-                                    val workRequest = OneTimeWorkRequestBuilder<AuthWorkerGett>().build()
-                                    WorkManager.getInstance(context).enqueue(workRequest)
+
+                                    workManager.getWorkInfoByIdLiveData(request.id)
+                                        .observe(lifecycleOwner) { workInfo ->
+                                            if (workInfo != null && workInfo.state.isFinished) {
+
+                                                val response = workInfo.outputData.getString("response")
+
+                                                Log.d("RESULT", response ?: "null")
+
+                                                if (response == "ok") {
+                                                    context.startActivity(intent1)
+                                                } else {
+                                                    Log.d("ERROR", "Неверные данные или ошибка")
+                                                }
+                                            }
+                                        }
+
                                     //getting()
-                                context.startActivity(intent1)
+                                //context.startActivity(intent1)
                                 }
                             },
                         )

@@ -14,7 +14,7 @@ class AuthWorkerGett(context: Context, params: WorkerParameters) : Worker(contex
         val client = OkHttpClient()
 
         val request = Request.Builder()
-            .url("http://192.168.1.80:8080/users")
+            .url("http://192.168.1.77:8080/suser")
             .build()
 
         try {
@@ -29,7 +29,7 @@ class AuthWorkerGett(context: Context, params: WorkerParameters) : Worker(contex
                 println("Server: ${response.header("Server")}")
                 // вывод тела ответа
                 println(response.body!!.string())
-                Log.d("yyy", "succses")
+                Log.d("yyy", "${response.body}")
             }
         }
         catch (e: IOException) {
