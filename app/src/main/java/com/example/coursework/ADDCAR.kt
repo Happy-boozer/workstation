@@ -54,11 +54,12 @@ class ADDCAR : ComponentActivity() {
             val name = remember { mutableStateOf("") }
             val VIN = remember { mutableStateOf("") }
             val plate = remember { mutableStateOf("") }
-            val user_login = intent.getStringExtra("login")
+
             var filteredSuggestions by remember { mutableStateOf(emptyList<String>()) }
             var showSuggestions by remember { mutableStateOf(false) }
 
             val context = LocalContext.current
+            val user_login = context.openFileInput("config.txt").use{String(it.readBytes())}
             val intent1 = Intent(context, MainActivity::class.java)
 
             CourseWorkTheme {

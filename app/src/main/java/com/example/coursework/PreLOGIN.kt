@@ -1,5 +1,10 @@
+/**
+ * происходит сбор и отправка данных для авторизации
+ */
+
 package com.example.coursework
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -37,7 +42,9 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.example.coursework.presentation.theme.CourseWorkTheme
 
-class PreLOGIN : ComponentActivity() {
+
+
+public class PreLOGIN : ComponentActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,6 +80,10 @@ class PreLOGIN : ComponentActivity() {
                     Row (modifier = Modifier.fillMaxWidth()){
                         Button(
                             onClick = {
+                                /**
+                                 * проверка данных введённых
+                                 * пользователем и их отаправка для проверке на сервере
+                                 */
                                 if (password.value == "admin" &&  login.value == "1"){
                                 }
                                 else{
@@ -97,9 +108,14 @@ class PreLOGIN : ComponentActivity() {
                                                 val response = workInfo.outputData.getString("response")
 
                                                 Log.d("RESULT", response ?: "null")
+                                                Log.d("were", "$workInfo")
 
                                                 if (response == "ok") {
                                                     intent1.putExtra("login", login.value)
+                                                    val filesDir = context.noBackupFilesDir
+                                                    context.openFileOutput("config.txt", Context.MODE_PRIVATE).use {
+                                                        it.write("$login".toByteArray())
+                                                    }
                                                     context.startActivity(intent1)
                                                 } else {
                                                     Log.d("ERROR", "Неверные данные или ошибка")
@@ -117,8 +133,8 @@ class PreLOGIN : ComponentActivity() {
                         Spacer(modifier = Modifier.width(16.dp))
                         Button(
                             onClick = {
-
                                 context.startActivity(intent2)
+
                             },
                         )
                         { Text("Зарегистрироваться")}}
