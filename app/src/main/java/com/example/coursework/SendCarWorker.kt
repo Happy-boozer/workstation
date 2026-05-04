@@ -28,7 +28,7 @@ class SendCarWorker(context: Context, params: WorkerParameters) : Worker(context
             .build()
 
         val request = Request.Builder()
-            .url("http://192.168.1.80:8080/insert_car")
+            .url("https://weak-crabs-love.loca.lt/insert_car")
             .post(formBody)
             .build()
 

