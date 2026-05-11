@@ -8,34 +8,52 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.work.Data
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import com.example.coursework.data.DTO.UserData
 import com.example.coursework.presentation.theme.CourseWorkTheme
 import io.ktor.client.HttpClient
 import io.ktor.http.HttpStatusCode
@@ -44,6 +62,8 @@ import io.ktor.client.request.get
 //import io.ktor.client.response.HttpResponse
 import io.ktor.client.statement.HttpResponse
 import kotlinx.coroutines.launch
+import androidx.compose.foundation.lazy.items
+import kotlinx.serialization.json.Json
 
 /**
  *
@@ -69,12 +89,60 @@ class MainActivity : ComponentActivity() {
 
         }
     }
-
+    var jsonString by mutableStateOf("")
+    @Composable
+    fun UserCard(user: UserData) {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+        ) {
+            Column(
+                modifier = Modifier.padding(16.dp)
+            ) {
+                Text(
+                    text = user.name,
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = "User ID: ${user.userId}",
+                    style = MaterialTheme.typography.bodyMedium
+                )
+                Text(
+                    text = "Sign: ${user.sighn}",
+                    style = MaterialTheme.typography.bodyMedium
+                )
+                Text(
+                    text = "VIN: ${user.vin}",
+                    style = MaterialTheme.typography.bodyMedium
+                )
+                Text(
+                    text = "Status: ${user.status}",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = if (user.status == "active") Color.Green else Color.Red
+                )
+            }
+        }
+    }
 
     @Composable
     fun SongsScreen(modifier: Modifier = Modifier) {
+
+        val lifecycleOwner = LocalLifecycleOwner.current
         val context = LocalContext.current
         val intent1 = Intent(context, ADDCAR::class.java)
+        val login = context.openFileInput("config.txt").use {
+            String(it.readBytes())
+        }
+        val loginStr = Regex("value=([^)]+)").find(login)?.groupValues?.get(1) ?: ""
+        //Log.d("login", "$loginStr")
+        /**/
+
+
+
         Box(
             modifier = Modifier.fillMaxSize(),
             //contentAlignment = Alignment.C
@@ -87,26 +155,101 @@ class MainActivity : ComponentActivity() {
                     context.startActivity(intent1)
                 }
             ){ Text("Добавить автомобиль")}
+                Button(modifier = Modifier.padding(40.dp),
+                onClick = {
+
+                    val Data = Data.Builder()
+                        .putString("login", loginStr)
+                        .build()
+                    val request = OneTimeWorkRequestBuilder<GetCaraWorker>()
+                        .setInputData(Data)
+                        .build()
+                    val workManager = WorkManager.getInstance(context)
+                    workManager.enqueue(request)
+
+                    Log.d("WORKER_34TEST", "Enqueue worker")
+
+                    //WorkManager.getInstance(context).enqueue(request)
+
+                    workManager.getWorkInfoByIdLiveData(request.id)
+                        .observe(lifecycleOwner) { workInfo ->
+
+                            if (workInfo != null && workInfo.state.isFinished) {
+
+                                val response = workInfo.outputData.getString("response")
+                                jsonString = response.toString().trimIndent()
+
+                                Log.d("RESUL55T", response ?: "null")
+                                Log.d("were22", "$workInfo")
+                }}}
+                ){ Text("автомобиль")}
+
+
+                var users by remember { mutableStateOf<List<UserData>>(emptyList()) }
+
+                LaunchedEffect(jsonString) {
+                    if (jsonString.isNotBlank()) {
+                        try {
+                            users = Json.decodeFromString(jsonString)
+                        } catch (e: Exception) {
+                            Log.e("JSON", "Ошибка парсинга: ${e.message}")
+                        }
+                    }
+                }
+
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+
+                    if (users.isEmpty()) {
+                        Text("Нет данных")
+                    } else {
+                        LazyColumn {
+                            items(users) { user ->
+                                UserCard(user = user)
+                            }
+                        }
+                    }
+                }
+
+
         }
+
         }
-            //context.startActivity(intent)
+
+
     }
+            //context.startActivity(intent)
+
 
     @Composable
     fun AlbumScreen(modifier: Modifier = Modifier) {
         val context = LocalContext.current
-        val intent = Intent(context, MainActivity2::class.java)
-        context.startActivity(intent)
-    }
+        val navController = rememberNavController()
 
-    @Composable
-    fun PlaylistScreen(modifier: Modifier = Modifier) {
+        // Запускаем Activity при первом входе на экран
+        LaunchedEffect(Unit) {
+            val intent = Intent(context, MainActivity2::class.java)
+            context.startActivity(intent)
+            // Возвращаемся назад в навигацию
+            navController.popBackStack()
+        }
+
+        // Показываем индикатор загрузки
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            Text("Playlist Screen")
+            CircularProgressIndicator()
+            Text("Opening MainActivity2...")
         }
+    }
+
+    @Composable
+    fun PlaylistScreen(modifier: Modifier = Modifier) {
+
+
     }
 
     enum class Destination(
@@ -173,7 +316,7 @@ class MainActivity : ComponentActivity() {
                                 }
                                 navController.navigate(route = destination.route)
                                 selectedDestination = index
-                                //val context = _context // Получаем текущий Context
+                                val context = _context // Получаем текущий Context
 
 
 

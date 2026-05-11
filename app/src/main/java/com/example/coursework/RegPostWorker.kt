@@ -10,7 +10,6 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
-import okio.Buffer
 
 class RegPostWorker(context: Context, params: WorkerParameters) : Worker(context, params) {
 
@@ -23,12 +22,10 @@ class RegPostWorker(context: Context, params: WorkerParameters) : Worker(context
             .add("phone_number", phone_number)
             .add("password", password)
             .build();
-        /*val buffer = Buffer()
-        formBody.writeTo(buffer)
-        val bodyString = buffer.readUtf8()
-        Log.d("rrw", "$bodyString)")*/
+
+
         val request = Request.Builder()
-            .url("https://weak-crabs-love.loca.lt/usver")
+            .url("http://192.168.1.80:3000/usver")
             .post(formBody)
             .build()
 

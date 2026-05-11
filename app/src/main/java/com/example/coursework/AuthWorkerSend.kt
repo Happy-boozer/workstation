@@ -26,7 +26,7 @@ class AuthWorkerSend(context: Context, params: WorkerParameters) : Worker(contex
             .build()
 
         val request = Request.Builder()
-            .url("https://weak-crabs-love.loca.lt/gi")
+            .url("http://192.168.1.80:3000/gi")
             .post(formBody)
             .build()
         var body: String? = ""
@@ -47,20 +47,20 @@ class AuthWorkerSend(context: Context, params: WorkerParameters) : Worker(contex
                     Log.e("WORKER_ERROR", "HTTP error: $code")
                 }
             }
-                /*throw kotlinx.io.IOException(
-                        "Запрос к серверу не был успешен:" +
-                                " ${response.code} ${response.message}"
-                    )
-                    Log.d("WORKER_CODE", response.code.toString())
-                }
-                // пример получения конкретного заголовка ответа
-                println("Server: ${response.header("Server")}")
-                // вывод тела ответа
-                println(response.body!!.string())
-                val responseBody = response.body?.string()
+            /*throw kotlinx.io.IOException(
+                    "Запрос к серверу не был успешен:" +
+                            " ${response.code} ${response.message}"
+                )
+                Log.d("WORKER_CODE", response.code.toString())
+            }
+            // пример получения конкретного заголовка ответа
+            println("Server: ${response.header("Server")}")
+            // вывод тела ответа
+            println(response.body!!.string())
+            val responseBody = response.body?.string()
 
-                Log.d("SERVER_RESPONSE", responseBody ?: "null")
-            }*/
+            Log.d("SERVER_RESPONSE", responseBody ?: "null")
+        }*/
         }
         catch (e: IOException) {
             println("Ошибка подключения: $e");
@@ -72,7 +72,7 @@ class AuthWorkerSend(context: Context, params: WorkerParameters) : Worker(contex
 
     override fun doWork(): ListenableWorker.Result {
         // Фоновая задача
-       
+        Log.d("rrr", "SUKA")
         val phone_number = inputData.getString("login").toString()
         val password = inputData.getString("password").toString()
         sending(phone_number, password)

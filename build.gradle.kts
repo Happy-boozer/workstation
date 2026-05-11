@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android) apply false
     alias(libs.plugins.kotlin.compose) apply false
     alias(libs.plugins.devtoolsKsp)
+    id("org.jetbrains.dokka") version "2.2.0"
 }
 
 //repositories {
