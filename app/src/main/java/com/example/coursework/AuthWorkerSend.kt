@@ -72,7 +72,7 @@ class AuthWorkerSend(context: Context, params: WorkerParameters) : Worker(contex
 
     override fun doWork(): ListenableWorker.Result {
         // Фоновая задача
-        Log.d("rrr", "SUKA")
+       
         val phone_number = inputData.getString("login").toString()
         val password = inputData.getString("password").toString()
         sending(phone_number, password)
