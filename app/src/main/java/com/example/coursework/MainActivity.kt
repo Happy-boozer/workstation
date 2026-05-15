@@ -107,10 +107,10 @@ class MainActivity : ComponentActivity() {
                     fontWeight = FontWeight.Bold
                 )
                 Spacer(modifier = Modifier.height(4.dp))
-                Text(
+                /*Text(
                     text = "User ID: ${user.userId}",
                     style = MaterialTheme.typography.bodyMedium
-                )
+                )*/
                 Text(
                     text = "Sign: ${user.sighn}",
                     style = MaterialTheme.typography.bodyMedium
@@ -182,7 +182,7 @@ class MainActivity : ComponentActivity() {
                                 Log.d("RESUL55T", response ?: "null")
                                 Log.d("were22", "$workInfo")
                 }}}
-                ){ Text("автомобиль")}
+                ){ Text("Обновить список автомобилей")}
 
 
                 var users by remember { mutableStateOf<List<UserData>>(emptyList()) }

@@ -60,6 +60,7 @@ class ADDCAR : ComponentActivity() {
 
             val context = LocalContext.current
             val user_login = context.openFileInput("config.txt").use{String(it.readBytes())}
+            val loginStr = Regex("value=([^)]+)").find(user_login)?.groupValues?.get(1) ?: ""
             val intent1 = Intent(context, MainActivity::class.java)
 
             CourseWorkTheme {
@@ -123,7 +124,7 @@ class ADDCAR : ComponentActivity() {
                             onClick = {
                                 //занести данные в бд
                                 val Data = Data.Builder()
-                                    .putString("login", user_login)
+                                    .putString("login", loginStr)
                                     .putString("VIN", VIN.value)
                                     .putString("name", name.value)
                                     .putString("plate", plate.value)

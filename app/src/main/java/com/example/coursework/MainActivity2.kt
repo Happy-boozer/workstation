@@ -25,6 +25,8 @@ import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.map.CameraPosition
 import com.yandex.mapkit.map.IconStyle
+import com.yandex.mapkit.map.MapWindow
+import com.yandex.mapkit.map.SizeChangedListener
 import com.yandex.mapkit.mapview.MapView
 import com.yandex.runtime.image.ImageProvider
 
@@ -126,7 +128,18 @@ fun YandexMapScreen() {
                 val placemark = map.mapObjects.
                 addPlacemark().apply { geometry = Point(55.575001, 37.598303)
                     setIcon(imageProvider, IconStyle().apply { scale = 0.3f })}
+
+                val sizeChangedListener = object : SizeChangedListener {
+                    override fun onMapWindowSizeChanged(mapWindow: MapWindow, width: Int, height: Int) {
+                        //placemark.setScaleFunction(MapWindow, width, height)
+
+                        // Handle window size changed ...
+                    }
+                }
+
             }
+
+
 
 
         },
