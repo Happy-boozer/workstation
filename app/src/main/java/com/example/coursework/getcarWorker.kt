@@ -49,20 +49,7 @@ class GetCaraWorker(context: Context, params: WorkerParameters) : Worker(context
                     Log.e("WORKER_ERROR", "HTTP error: $code")
                 }
             }
-            /*throw kotlinx.io.IOException(
-                    "Запрос к серверу не был успешен:" +
-                            " ${response.code} ${response.message}"
-                )
-                Log.d("WORKER_CODE", response.code.toString())
-            }
-            // пример получения конкретного заголовка ответа
-            println("Server: ${response.header("Server")}")
-            // вывод тела ответа
-            println(response.body!!.string())
-            val responseBody = response.body?.string()
 
-            Log.d("SERVER_RESPONSE", responseBody ?: "null")
-        }*/
         }
         catch (e: IOException) {
             println("Ошибка подключения: $e");
